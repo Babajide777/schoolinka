@@ -15,10 +15,13 @@ app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+import userRoutes from "./routes/userRoutes.js";
+
 //routes
 app.get("/", (req: Request, res: Response): void => {
   res.send("Medical departure server running");
 });
+app.use("/api/user", userRoutes);
 swaggerDocs(app, PORT);
 
 connection
