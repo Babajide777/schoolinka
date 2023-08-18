@@ -11,6 +11,12 @@ const connection = new Sequelize({
   password,
   database,
   logging: false,
+  models: [__dirname + "/models/**/*Model.ts"],
+  modelMatch: (filename, member) => {
+    return (
+      filename.substring(0, filename.indexOf(".model")) === member.toLowerCase()
+    );
+  },
 });
 
 export default connection;
