@@ -4,6 +4,7 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import corsOptions from "./utils/corsOptions";
 import connection from "./config/db";
+import swaggerDocs from "./utils/swagger";
 
 dotenv.config();
 const app: Application = express();
@@ -18,6 +19,7 @@ app.use(express.json());
 app.get("/", (req: Request, res: Response): void => {
   res.send("Medical departure server running");
 });
+swaggerDocs(app, PORT);
 
 connection
   .sync({ force: false })
