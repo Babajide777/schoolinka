@@ -1,4 +1,5 @@
 import User from "../models/userModel";
+import bcrypt from "bcryptjs";
 
 interface IFindByEmail {
   email: string;
@@ -37,7 +38,7 @@ const createAUser = async ({
       firstName,
       lastName,
       email,
-      password,
+      password: await hashedPassword(password),
     });
 
     return newUser ? [true, newUser] : [false, "Error creating User"];
@@ -46,4 +47,10 @@ const createAUser = async ({
   }
 };
 
-export { findUserByEmail };
+//To hash pasword
+const hashedPassword = async (password: string): Promise<string> => {
+  const salt = await bcrypt.genSalt(15);
+  return await bcrypt.hash(password, salt);
+};
+
+export { findUserByEmail, createAUser };
