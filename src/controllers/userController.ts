@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { userRegisterValidation } from "../utils/validation";
 import responseHandler from "../utils/responseHandler";
-import { findUserByEmail } from "../services/userService";
+import { createAUser, findUserByEmail } from "../services/userService";
 
 const resgisterUser = async (req: Request, res: Response) => {
   console.log(req.body);
@@ -30,6 +30,12 @@ const resgisterUser = async (req: Request, res: Response) => {
       check[1].error
     );
   }
+
+  const user = await createAUser(req.body);
+
+  return user[0]
+    ? responseHandler(res, "User registered successfully", 201, true, user[1])
+    : responseHandler(res, "Error registering user", 400, false, "");
 };
 const loginUser = async (req: Request, res: Response) => {};
 const getUser = async (req: Request, res: Response) => {};

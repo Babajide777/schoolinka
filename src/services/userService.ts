@@ -41,6 +41,8 @@ const createAUser = async ({
       password: await hashedPassword(password),
     });
 
+    console.log(newUser);
+
     return newUser ? [true, newUser] : [false, "Error creating User"];
   } catch (error) {
     return [false, { error }];
