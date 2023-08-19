@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import { Sequelize } from "sequelize-typescript";
 
-const { host, username, password, database, dbURL, dbPort } = process.env;
+const { host, username, password, database } = process.env;
 
 const connection = new Sequelize({
   dialect: "mysql",
