@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
 import { userRegisterValidation } from "../utils/validation";
 import responseHandler from "../utils/responseHandler";
+import { findUserByEmail } from "../services/userService";
 
 const resgisterUser = async (req: Request, res: Response) => {
+  console.log(req.body);
+
   //validate req.body
   const { details } = await userRegisterValidation(req.body);
   if (details) {
@@ -10,6 +13,22 @@ const resgisterUser = async (req: Request, res: Response) => {
       detail.message.replace(/"/g, "")
     );
     return responseHandler(res, allErrors, 400, false, "");
+  }
+
+  const check = await findUserByEmail({ email: req.body.email });
+
+  if (check[0]) {
+    return responseHandler(res, "Email taken", 400, false, "");
+  }
+
+  if (check[1].error) {
+    return responseHandler(
+      res,
+      "Error creating a user",
+      400,
+      false,
+      check[1].error
+    );
   }
 };
 const loginUser = async (req: Request, res: Response) => {};

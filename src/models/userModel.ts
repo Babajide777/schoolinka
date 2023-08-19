@@ -6,7 +6,7 @@ import { Table, Model, Column, DataType } from "sequelize-typescript";
   freezeTableName: true,
   modelName: "User",
 })
-export class User extends Model {
+class User extends Model {
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
