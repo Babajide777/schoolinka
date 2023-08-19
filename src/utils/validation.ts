@@ -1,7 +1,7 @@
-const Joi = require("joi");
+import Joi from "joi";
 
 //User registration validation rules
-const userRegisterValidation = async (field) => {
+const userRegisterValidation = async (field: object) => {
   const schema = Joi.object({
     firstName: Joi.string().alphanum().required(),
     lastName: Joi.string().alphanum().required(),
@@ -15,6 +15,4 @@ const userRegisterValidation = async (field) => {
   }
 };
 
-module.exports = {
-  userRegisterValidation,
-};
+export { userRegisterValidation };
