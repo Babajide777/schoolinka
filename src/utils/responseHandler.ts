@@ -6,7 +6,7 @@ let responseHandler = (
   message: string,
   statusCode: number,
   success: boolean = false,
-  data: object = {}
+  data: object | string = {}
 ) => {
   res.status(statusCode).json({
     success,
