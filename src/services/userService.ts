@@ -111,6 +111,17 @@ const verifyJWTToken = (token: string): [boolean, any] => {
   }
 };
 
+const findUserByID = async (id: number): Promise<[boolean, any]> => {
+  try {
+    const theUser = await User.findByPk(id, {
+      attributes: { exclude: ["password"] },
+    });
+
+    return theUser ? [true, theUser] : [false, "No user found"];
+  } catch (error) {
+    return [false, { error }];
+  }
+};
 export {
   findUserByEmail,
   createAUser,
@@ -118,4 +129,5 @@ export {
   validatePassword,
   signJwt,
   verifyJWTToken,
+  findUserByID,
 };

@@ -8,6 +8,7 @@ import {
   createAUser,
   findUserByEmail,
   findUserByEmailWithPassword,
+  findUserByID,
   signJwt,
   validatePassword,
 } from "../services/userService";
@@ -80,7 +81,22 @@ const loginUser = async (req: Request, res: Response) => {
   return responseHandler(res, "Email or Password is incorrect", 400, false, "");
 };
 
-const getUser = async (req: Request, res: Response) => {};
+const getUser = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  const check = await findUserByID(id);
+
+  return check[0]
+    ? responseHandler(
+        res,
+        "User details retrieved successfully",
+        200,
+        true,
+        check[1]
+      )
+    : responseHandler(res, "Error retrieving user details", 400, false, "");
+};
+
 const editUser = async (req: Request, res: Response) => {};
 const deleteUser = async (req: Request, res: Response) => {};
 
