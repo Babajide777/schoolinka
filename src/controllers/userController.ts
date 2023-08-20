@@ -4,8 +4,6 @@ import responseHandler from "../utils/responseHandler";
 import { createAUser, findUserByEmail } from "../services/userService";
 
 const resgisterUser = async (req: Request, res: Response) => {
-  console.log(req.body);
-
   //validate req.body
   const { details } = await userRegisterValidation(req.body);
   if (details) {

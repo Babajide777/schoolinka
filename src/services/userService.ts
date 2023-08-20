@@ -47,8 +47,6 @@ const createAUser = async ({
       password: await hashedPassword(password),
     });
 
-    console.log(newUser);
-
     return newUser
       ? [true, signJwt(newUser.id)]
       : [false, "Error creating User"];
@@ -64,7 +62,7 @@ const hashedPassword = async (password: string): Promise<string> => {
 };
 
 // create and sign json web token for a
-const signJwt = (id: number) => {
+const signJwt = (id: number): IData => {
   const token = jwt.sign({ id }, TOKEN_SECRET, {
     expiresIn: 60 * 60 * 24 * 30,
   });
