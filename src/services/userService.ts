@@ -122,6 +122,24 @@ const findUserByID = async (id: number): Promise<[boolean, any]> => {
     return [false, { error }];
   }
 };
+
+const findAndDeleteAUser = async (id: number): Promise<[boolean, any]> => {
+  try {
+    const deletedUser = await User.destroy({
+      where: {
+        id: id,
+      },
+      force: true,
+    });
+
+    return deletedUser === 0
+      ? [false, "No user found"]
+      : [true, "User deleted successfully"];
+  } catch (error) {
+    return [false, error];
+  }
+};
+
 export {
   findUserByEmail,
   createAUser,
@@ -130,4 +148,5 @@ export {
   signJwt,
   verifyJWTToken,
   findUserByID,
+  findAndDeleteAUser,
 };

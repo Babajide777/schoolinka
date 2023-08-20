@@ -28,4 +28,16 @@ const userLoginValidation = async (field: object) => {
   }
 };
 
-export { userRegisterValidation, userLoginValidation };
+//User ID validation rules
+const userIDValidation = async (field: object) => {
+  const schema = Joi.object({
+    id: Joi.number().integer().required(),
+  });
+  try {
+    return await schema.validateAsync(field, { abortEarly: false });
+  } catch (err) {
+    return err;
+  }
+};
+
+export { userRegisterValidation, userLoginValidation, userIDValidation };

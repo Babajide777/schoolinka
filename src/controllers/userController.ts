@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import {
+  userIDValidation,
   userLoginValidation,
   userRegisterValidation,
 } from "../utils/validation";
 import responseHandler from "../utils/responseHandler";
 import {
   createAUser,
+  findAndDeleteAUser,
   findUserByEmail,
   findUserByEmailWithPassword,
   findUserByID,
@@ -84,6 +86,14 @@ const loginUser = async (req: Request, res: Response) => {
 const getUser = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
 
+  const { details } = await userIDValidation({ id });
+  if (details) {
+    let allErrors = details.map((detail: any) =>
+      detail.message.replace(/"/g, "")
+    );
+    return responseHandler(res, allErrors, 400, false, "");
+  }
+
   const check = await findUserByID(id);
 
   return check[0]
@@ -98,6 +108,23 @@ const getUser = async (req: Request, res: Response) => {
 };
 
 const editUser = async (req: Request, res: Response) => {};
-const deleteUser = async (req: Request, res: Response) => {};
+
+const deleteUser = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  const { details } = await userIDValidation({ id });
+  if (details) {
+    let allErrors = details.map((detail: any) =>
+      detail.message.replace(/"/g, "")
+    );
+    return responseHandler(res, allErrors, 400, false, "");
+  }
+
+  const check = await findAndDeleteAUser(id);
+
+  return check[0]
+    ? responseHandler(res, "User deleted successfully", 200, true, "")
+    : responseHandler(res, "Error deleting User", 400, false, check[1]);
+};
 
 export { resgisterUser, loginUser, getUser, editUser, deleteUser };
