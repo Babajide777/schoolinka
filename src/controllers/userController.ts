@@ -44,6 +44,7 @@ const resgisterUser = async (req: Request, res: Response) => {
     ? responseHandler(res, "User registered successfully", 201, true, user[1])
     : responseHandler(res, "Error registering user", 400, false, "");
 };
+
 const loginUser = async (req: Request, res: Response) => {
   //validate req.body
   const { details } = await userLoginValidation(req.body);
@@ -78,6 +79,7 @@ const loginUser = async (req: Request, res: Response) => {
   }
   return responseHandler(res, "Email or Password is incorrect", 400, false, "");
 };
+
 const getUser = async (req: Request, res: Response) => {};
 const editUser = async (req: Request, res: Response) => {};
 const deleteUser = async (req: Request, res: Response) => {};

@@ -101,10 +101,21 @@ const validatePassword = async (
   }
 };
 
+const verifyJWTToken = (token: string): [boolean, any] => {
+  try {
+    let verifyToken = jwt.verify(token, TOKEN_SECRET);
+
+    return [true, verifyToken];
+  } catch (error) {
+    return [false, "invalid or Expired JWT"];
+  }
+};
+
 export {
   findUserByEmail,
   createAUser,
   findUserByEmailWithPassword,
   validatePassword,
   signJwt,
+  verifyJWTToken,
 };

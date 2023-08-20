@@ -7,6 +7,7 @@ import {
   loginUser,
   resgisterUser,
 } from "../controllers/userController";
+import verifyToken from "../middlewares/authMiddleware";
 
 /**
  * @swagger
@@ -33,8 +34,8 @@ import {
  */
 router.post("/register", resgisterUser);
 router.post("/login", loginUser);
-router.get("/get/user/:id", getUser);
-router.put("/edit/user/:id", editUser);
-router.delete("/delete/user/:id", deleteUser);
+router.get("/get/:id", verifyToken, getUser);
+router.put("/edit/:id", editUser);
+router.delete("/delete/:id", deleteUser);
 
 export default router;
