@@ -28,8 +28,6 @@ import {
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/CreateUserResponse'
- *      409:
- *        description: Conflict
  *      400:
  *        description: Bad request
  */
