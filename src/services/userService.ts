@@ -85,4 +85,25 @@ const findUserByEmailWithPassword = async ({
   }
 };
 
-export { findUserByEmail, createAUser, findUserByEmailWithPassword };
+//To validate user password
+const validatePassword = async (
+  formPassword: string,
+  dbPassword: string
+): Promise<[boolean, any]> => {
+  try {
+    const check = await bcrypt.compare(formPassword, dbPassword);
+
+    return check
+      ? [true, "Password correct"]
+      : [false, "Email or Password is incorrect"];
+  } catch (error) {
+    return [false, { error }];
+  }
+};
+
+export {
+  findUserByEmail,
+  createAUser,
+  findUserByEmailWithPassword,
+  validatePassword,
+};
