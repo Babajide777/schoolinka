@@ -8,6 +8,8 @@ import {
   createAUser,
   findUserByEmail,
   findUserByEmailWithPassword,
+  signJwt,
+  validatePassword,
 } from "../services/userService";
 
 const resgisterUser = async (req: Request, res: Response) => {
@@ -66,6 +68,15 @@ const loginUser = async (req: Request, res: Response) => {
       ""
     );
   }
+
+  //validate incoming password with database password
+  if (await validatePassword(req.body.password, anyUser[1].password)) {
+    signJwt;
+    let signedJWT = signJwt(anyUser[1].id);
+
+    return responseHandler(res, "Login Successful", 200, true, signedJWT);
+  }
+  return responseHandler(res, "Email or Password is incorrect", 400, false, "");
 };
 const getUser = async (req: Request, res: Response) => {};
 const editUser = async (req: Request, res: Response) => {};
