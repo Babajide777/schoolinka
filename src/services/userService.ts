@@ -71,4 +71,18 @@ const signJwt = (id: number): IData => {
   return { token: data.token };
 };
 
-export { findUserByEmail, createAUser };
+const findUserByEmailWithPassword = async ({
+  email,
+}: IFindByEmail): Promise<[boolean, any]> => {
+  try {
+    const theUser = await User.findOne({
+      where: { email: email },
+    });
+
+    return theUser ? [true, theUser] : [false, "No user found"];
+  } catch (error) {
+    return [false, { error }];
+  }
+};
+
+export { findUserByEmail, createAUser, findUserByEmailWithPassword };

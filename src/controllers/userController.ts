@@ -4,7 +4,11 @@ import {
   userRegisterValidation,
 } from "../utils/validation";
 import responseHandler from "../utils/responseHandler";
-import { createAUser, findUserByEmail } from "../services/userService";
+import {
+  createAUser,
+  findUserByEmail,
+  findUserByEmailWithPassword,
+} from "../services/userService";
 
 const resgisterUser = async (req: Request, res: Response) => {
   //validate req.body
@@ -46,6 +50,21 @@ const loginUser = async (req: Request, res: Response) => {
       detail.message.replace(/"/g, "")
     );
     return responseHandler(res, allErrors, 400, false, "");
+  }
+
+  //Check if email already exist in the database
+  const anyUser = await findUserByEmailWithPassword({
+    email: req.body.email,
+  });
+
+  if (!anyUser[0]) {
+    return responseHandler(
+      res,
+      "Email or Password is incorrect",
+      400,
+      false,
+      ""
+    );
   }
 };
 const getUser = async (req: Request, res: Response) => {};
