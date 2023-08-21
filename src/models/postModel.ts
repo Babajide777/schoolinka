@@ -1,4 +1,12 @@
-import { Table, Model, Column, DataType } from "sequelize-typescript";
+import {
+  Table,
+  Model,
+  Column,
+  DataType,
+  ForeignKey,
+  BelongsTo,
+} from "sequelize-typescript";
+import User from "./userModel";
 
 @Table({
   timestamps: true,
@@ -26,6 +34,13 @@ class Post extends Model {
     allowNull: false,
   })
   description!: string;
+
+  @ForeignKey(() => User)
+  @Column
+  userId!: number;
+
+  @BelongsTo(() => User)
+  user!: User;
 }
 
 export default Post;

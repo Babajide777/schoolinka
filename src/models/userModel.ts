@@ -1,4 +1,5 @@
-import { Table, Model, Column, DataType } from "sequelize-typescript";
+import { Table, Model, Column, DataType, HasMany } from "sequelize-typescript";
+import Post from "./postModel";
 
 /**
  * @openapi
@@ -87,6 +88,9 @@ class User extends Model {
     allowNull: false,
   })
   password!: string;
+
+  @HasMany(() => Post)
+  posts!: Post[];
 }
 
 export default User;
