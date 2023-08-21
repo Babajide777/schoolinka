@@ -107,7 +107,25 @@ const getUser = async (req: Request, res: Response) => {
     : responseHandler(res, "Error retrieving user details", 400, false, "");
 };
 
-const editUser = async (req: Request, res: Response) => {};
+const editUser = async (req: Request, res: Response) => {
+  //validate req.body
+  const { details } = await userRegisterValidation(req.body);
+  if (details) {
+    let allErrors = details.map((detail: any) =>
+      detail.message.replace(/"/g, "")
+    );
+    return responseHandler(res, allErrors, 400, false, "");
+  }
+
+  //Check if email already exist in the database
+  const anyUser = await findUserByEmailWithPassword({
+    email: req.body.email,
+  });
+
+  if (!anyUser[0]) {
+    return responseHandler(res, "User does not exist", 400, false, "");
+  }
+};
 
 const deleteUser = async (req: Request, res: Response) => {
   const id = Number(req.params.id);

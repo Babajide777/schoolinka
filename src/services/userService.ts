@@ -140,6 +140,35 @@ const findAndDeleteAUser = async (id: number): Promise<[boolean, any]> => {
   }
 };
 
+const findAndEditUserDetails = async ({
+  firstName,
+  lastName,
+  email,
+  password,
+}: ICreateAUser): Promise<[boolean, any]> => {
+  try {
+    let editedUser = await User.update(
+      {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: await hashedPassword(password),
+      },
+      {
+        where: {
+          email: email,
+        },
+      }
+    );
+
+    return editedUser[0] === 0
+      ? [false, "No user found"]
+      : [true, "User edited successfully"];
+  } catch (error) {
+    return [false, { error }];
+  }
+};
+
 export {
   findUserByEmail,
   createAUser,
@@ -149,4 +178,5 @@ export {
   verifyJWTToken,
   findUserByID,
   findAndDeleteAUser,
+  findAndEditUserDetails,
 };
