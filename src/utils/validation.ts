@@ -40,4 +40,22 @@ const userIDValidation = async (field: object) => {
   }
 };
 
-export { userRegisterValidation, userLoginValidation, userIDValidation };
+//add blog validation rules
+const addBlogValidation = async (field: object) => {
+  const schema = Joi.object({
+    title: Joi.string().required(),
+    description: Joi.string().required(),
+  });
+  try {
+    return await schema.validateAsync(field, { abortEarly: false });
+  } catch (err) {
+    return err;
+  }
+};
+
+export {
+  userRegisterValidation,
+  userLoginValidation,
+  userIDValidation,
+  addBlogValidation,
+};
