@@ -8,6 +8,7 @@ import responseHandler from "../utils/responseHandler";
 import {
   createAUser,
   findAndDeleteAUser,
+  findAndEditUserDetails,
   findUserByEmail,
   findUserByEmailWithPassword,
   findUserByID,
@@ -118,13 +119,25 @@ const editUser = async (req: Request, res: Response) => {
   }
 
   //Check if email already exist in the database
-  const anyUser = await findUserByEmailWithPassword({
+  const anyUser = await findUserByEmail({
     email: req.body.email,
   });
 
   if (!anyUser[0]) {
     return responseHandler(res, "User does not exist", 400, false, "");
   }
+
+  const editedUser = await findAndEditUserDetails(req.body);
+
+  return editedUser[0]
+    ? responseHandler(res, editedUser[1], 200, true, anyUser[1])
+    : responseHandler(
+        res,
+        "Error editing User details",
+        400,
+        false,
+        editedUser[1]
+      );
 };
 
 const deleteUser = async (req: Request, res: Response) => {
