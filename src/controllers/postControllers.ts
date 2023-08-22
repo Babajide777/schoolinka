@@ -4,6 +4,7 @@ import responseHandler from "../utils/responseHandler";
 import { findUserByID, verifyJWTToken } from "../services/userService";
 import {
   createAPost,
+  findAndDeleteAPost,
   findAndEditPostDetails,
   findPostByID,
 } from "../services/postService";
@@ -110,7 +111,24 @@ const editBlogPost = async (req: Request, res: Response) => {
       )
     : responseHandler(res, editedPost[1], 400, false, "");
 };
-const deleteBlogPost = async (req: Request, res: Response) => {};
+
+const deleteBlogPost = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  const { details } = await userIDValidation({ id });
+  if (details) {
+    let allErrors = details.map((detail: any) =>
+      detail.message.replace(/"/g, "")
+    );
+    return responseHandler(res, allErrors, 400, false, "");
+  }
+
+  const check = await findAndDeleteAPost(id);
+
+  return check[0]
+    ? responseHandler(res, "Post deleted successfully", 200, true, "")
+    : responseHandler(res, "Error deleting Post", 400, false, check[1]);
+};
 const getAllPosts = async (req: Request, res: Response) => {};
 
 export { addBlogPost, getBlogPost, editBlogPost, deleteBlogPost, getAllPosts };
