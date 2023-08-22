@@ -2,7 +2,11 @@ import { Request, Response } from "express";
 import { addBlogValidation, userIDValidation } from "../utils/validation";
 import responseHandler from "../utils/responseHandler";
 import { findUserByID, verifyJWTToken } from "../services/userService";
-import { createAPost, findPostByID } from "../services/postService";
+import {
+  createAPost,
+  findAndEditPostDetails,
+  findPostByID,
+} from "../services/postService";
 
 const addBlogPost = async (req: Request, res: Response) => {
   //validate req.body
@@ -87,6 +91,24 @@ const editBlogPost = async (req: Request, res: Response) => {
     );
     return responseHandler(res, allErrors, 400, false, "");
   }
+
+  const { title, description } = req.body;
+
+  const editedPost = await findAndEditPostDetails({
+    title,
+    description,
+    userId: id,
+  });
+
+  return editedPost[0]
+    ? responseHandler(
+        res,
+        "Blog Post edited successfully",
+        201,
+        true,
+        editedPost[1]
+      )
+    : responseHandler(res, editedPost[1], 400, false, "");
 };
 const deleteBlogPost = async (req: Request, res: Response) => {};
 const getAllPosts = async (req: Request, res: Response) => {};
