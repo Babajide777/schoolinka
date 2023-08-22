@@ -4,6 +4,7 @@ import responseHandler from "../utils/responseHandler";
 import { findUserByID, verifyJWTToken } from "../services/userService";
 import {
   createAPost,
+  findAllPosts,
   findAndDeleteAPost,
   findAndEditPostDetails,
   findPostByID,
@@ -129,6 +130,30 @@ const deleteBlogPost = async (req: Request, res: Response) => {
     ? responseHandler(res, "Post deleted successfully", 200, true, "")
     : responseHandler(res, "Error deleting Post", 400, false, check[1]);
 };
-const getAllPosts = async (req: Request, res: Response) => {};
+
+const getAllPosts = async (req: Request, res: Response) => {
+  const bearerHeader = req.headers.authorization;
+
+  if (bearerHeader !== undefined) {
+    const token = bearerHeader.split(" ")[1];
+
+    const check = verifyJWTToken(token);
+    const { id } = check[1];
+
+    const allPosts = await findAllPosts(id);
+
+    return allPosts[0]
+      ? responseHandler(
+          res,
+          "All Posts retrieved successfully",
+          200,
+          true,
+          allPosts[1]
+        )
+      : responseHandler(res, allPosts[1], 400, false, "");
+  }
+
+  return responseHandler(res, "No authorization token found", 403, false, "");
+};
 
 export { addBlogPost, getBlogPost, editBlogPost, deleteBlogPost, getAllPosts };
