@@ -24,4 +24,14 @@ const createAPost = async ({
   }
 };
 
-export { createAPost };
+const findPostByID = async (id: number): Promise<[boolean, any]> => {
+  try {
+    const thePost = await Post.findByPk(id);
+
+    return thePost ? [true, thePost] : [false, "No post found"];
+  } catch (error) {
+    return [false, { error }];
+  }
+};
+
+export { createAPost, findPostByID };

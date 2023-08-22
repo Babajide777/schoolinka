@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { addBlogValidation } from "../utils/validation";
+import { addBlogValidation, userIDValidation } from "../utils/validation";
 import responseHandler from "../utils/responseHandler";
 import { findUserByID, verifyJWTToken } from "../services/userService";
-import { createAPost } from "../services/postService";
+import { createAPost, findPostByID } from "../services/postService";
 
 const addBlogPost = async (req: Request, res: Response) => {
   //validate req.body
@@ -45,7 +45,30 @@ const addBlogPost = async (req: Request, res: Response) => {
 
   return responseHandler(res, "No authorization token found", 403, false, "");
 };
-const getBlogPost = async (req: Request, res: Response) => {};
+
+const getBlogPost = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  const { details } = await userIDValidation({ id });
+  if (details) {
+    let allErrors = details.map((detail: any) =>
+      detail.message.replace(/"/g, "")
+    );
+    return responseHandler(res, allErrors, 400, false, "");
+  }
+
+  const check = await findPostByID(id);
+
+  return check[0]
+    ? responseHandler(
+        res,
+        "Post details retrieved successfully",
+        200,
+        true,
+        check[1]
+      )
+    : responseHandler(res, check[1], 400, false, "");
+};
 const editBlogPost = async (req: Request, res: Response) => {};
 const deleteBlogPost = async (req: Request, res: Response) => {};
 const getAllPosts = async (req: Request, res: Response) => {};

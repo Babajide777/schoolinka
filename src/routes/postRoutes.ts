@@ -6,12 +6,13 @@ import {
   getAllPosts,
   getBlogPost,
 } from "../controllers/postControllers";
+import verifyToken from "../middlewares/authMiddleware";
 const router = Router();
 
-router.post("/add", addBlogPost);
-router.get("/get", getBlogPost);
-router.put("/edit", editBlogPost);
-router.delete("/delete", deleteBlogPost);
-router.get("/all", getAllPosts);
+router.post("/add", verifyToken, addBlogPost);
+router.get("/get/:id", verifyToken, getBlogPost);
+router.put("/edit", verifyToken, editBlogPost);
+router.delete("/delete", verifyToken, deleteBlogPost);
+router.get("/all", verifyToken, getAllPosts);
 
 export default router;
