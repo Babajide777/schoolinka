@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { addBlogValidation } from "../utils/validation";
 import responseHandler from "../utils/responseHandler";
 import { findUserByID, verifyJWTToken } from "../services/userService";
+import { createAPost } from "../services/postService";
 
 const addBlogPost = async (req: Request, res: Response) => {
   //validate req.body
@@ -21,7 +22,25 @@ const addBlogPost = async (req: Request, res: Response) => {
     const check = verifyJWTToken(token);
     const { id } = check[1];
 
+    const { title, description } = req.body;
+
     const person = await findUserByID(id);
+
+    if (person[0]) {
+      const createdPost = await createAPost({ title, description, userId: id });
+
+      return createdPost[0]
+        ? responseHandler(
+            res,
+            "Blog Post registered successfully",
+            201,
+            true,
+            createdPost[1]
+          )
+        : responseHandler(res, createdPost[1], 400, false, "");
+    }
+
+    return responseHandler(res, "No user found", 400, false, "");
   }
 
   return responseHandler(res, "No authorization token found", 403, false, "");
