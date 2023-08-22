@@ -60,4 +60,26 @@ const findAndEditPostDetails = async ({
   }
 };
 
-export { createAPost, findPostByID, findAndEditPostDetails };
+const findAndDeleteAPost = async (id: number): Promise<[boolean, any]> => {
+  try {
+    const deletedUser = await Post.destroy({
+      where: {
+        id: id,
+      },
+      force: true,
+    });
+
+    return deletedUser === 0
+      ? [false, "No Post found"]
+      : [true, "Post deleted successfully"];
+  } catch (error) {
+    return [false, error];
+  }
+};
+
+export {
+  createAPost,
+  findPostByID,
+  findAndEditPostDetails,
+  findAndDeleteAPost,
+};
