@@ -34,4 +34,30 @@ const findPostByID = async (id: number): Promise<[boolean, any]> => {
   }
 };
 
-export { createAPost, findPostByID };
+const findAndEditPostDetails = async ({
+  title,
+  description,
+  userId,
+}: ICreateAPost): Promise<[boolean, any]> => {
+  try {
+    let editedUser = await Post.update(
+      {
+        title: title,
+        description: description,
+      },
+      {
+        where: {
+          userId: userId,
+        },
+      }
+    );
+
+    return editedUser[0] === 0
+      ? [false, "No Post found"]
+      : [true, "Post edited successfully"];
+  } catch (error) {
+    return [false, { error }];
+  }
+};
+
+export { createAPost, findPostByID, findAndEditPostDetails };

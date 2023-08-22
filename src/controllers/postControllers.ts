@@ -69,7 +69,25 @@ const getBlogPost = async (req: Request, res: Response) => {
       )
     : responseHandler(res, check[1], 400, false, "");
 };
-const editBlogPost = async (req: Request, res: Response) => {};
+
+const editBlogPost = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  const check = await findPostByID(id);
+
+  if (!check[0]) {
+    return responseHandler(res, "Post does not exist", 400, false, "");
+  }
+
+  //validate req.body
+  let { details } = await addBlogValidation(req.body);
+  if (details) {
+    let allErrors = details.map((detail: any) =>
+      detail.message.replace(/"/g, "")
+    );
+    return responseHandler(res, allErrors, 400, false, "");
+  }
+};
 const deleteBlogPost = async (req: Request, res: Response) => {};
 const getAllPosts = async (req: Request, res: Response) => {};
 
