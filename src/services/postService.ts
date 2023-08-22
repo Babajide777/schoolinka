@@ -77,9 +77,20 @@ const findAndDeleteAPost = async (id: number): Promise<[boolean, any]> => {
   }
 };
 
+const findAllPosts = async (): Promise<[boolean, any]> => {
+  try {
+    const allPosts = await Post.findAll();
+
+    return [true, allPosts];
+  } catch (error) {
+    return [false, error];
+  }
+};
+
 export {
   createAPost,
   findPostByID,
   findAndEditPostDetails,
   findAndDeleteAPost,
+  findAllPosts,
 };
