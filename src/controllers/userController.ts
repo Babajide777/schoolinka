@@ -129,15 +129,14 @@ const editUser = async (req: Request, res: Response) => {
 
   const editedUser = await findAndEditUserDetails(req.body);
 
+  //get the new User details
+  const anyUser2 = await findUserByEmail({
+    email: req.body.email,
+  });
+
   return editedUser[0]
-    ? responseHandler(res, editedUser[1], 200, true, anyUser[1])
-    : responseHandler(
-        res,
-        "Error editing User details",
-        400,
-        false,
-        editedUser[1]
-      );
+    ? responseHandler(res, editedUser[1], 200, true, anyUser2[1])
+    : responseHandler(res, editedUser[1], 400, false, "");
 };
 
 const deleteUser = async (req: Request, res: Response) => {

@@ -32,6 +32,7 @@ import verifyToken from "../middlewares/authMiddleware";
  *      400:
  *        description: Bad request
  */
+
 router.post("/register", resgisterUser);
 router.post("/login", loginUser);
 router.get("/get/:id", verifyToken, getUser);
