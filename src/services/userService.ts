@@ -18,6 +18,10 @@ interface IData {
   token?: string;
 }
 
+interface IEditUser extends ICreateAUser {
+  id: number;
+}
+
 const findUserByEmail = async ({
   email,
 }: IFindByEmail): Promise<[boolean, any]> => {
@@ -145,7 +149,8 @@ const findAndEditUserDetails = async ({
   lastName,
   email,
   password,
-}: ICreateAUser): Promise<[boolean, any]> => {
+  id,
+}: IEditUser): Promise<[boolean, any]> => {
   try {
     let editedUser = await User.update(
       {
@@ -157,12 +162,13 @@ const findAndEditUserDetails = async ({
       {
         where: {
           email: email,
+          id: id,
         },
       }
     );
 
     return editedUser[0] === 0
-      ? [false, "No user found"]
+      ? [false, "Wrong User or Email "]
       : [true, "User edited successfully"];
   } catch (error) {
     return [false, { error }];

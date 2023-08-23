@@ -109,6 +109,12 @@ const getUser = async (req: Request, res: Response) => {
 };
 
 const editUser = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  if (!Number.isInteger(id)) {
+    return responseHandler(res, "Invalid User Id", 400, false, "");
+  }
+
   //validate req.body
   const { details } = await userRegisterValidation(req.body);
   if (details) {
@@ -127,7 +133,7 @@ const editUser = async (req: Request, res: Response) => {
     return responseHandler(res, "User does not exist", 400, false, "");
   }
 
-  const editedUser = await findAndEditUserDetails(req.body);
+  const editedUser = await findAndEditUserDetails({ ...req.body, id });
 
   //get the new User details
   const anyUser2 = await findUserByEmail({
