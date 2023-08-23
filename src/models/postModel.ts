@@ -30,7 +30,7 @@ class Post extends Model {
   title!: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.TEXT("long"),
     allowNull: false,
   })
   description!: string;

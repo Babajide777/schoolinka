@@ -6,6 +6,10 @@ interface ICreateAPost {
   userId: number;
 }
 
+interface IEditAPost extends ICreateAPost {
+  postId: number;
+}
+
 const createAPost = async ({
   title,
   description,
@@ -38,7 +42,8 @@ const findAndEditPostDetails = async ({
   title,
   description,
   userId,
-}: ICreateAPost): Promise<[boolean, any]> => {
+  postId,
+}: IEditAPost): Promise<[boolean, any]> => {
   try {
     let editedUser = await Post.update(
       {
@@ -48,6 +53,7 @@ const findAndEditPostDetails = async ({
       {
         where: {
           userId: userId,
+          id: postId,
         },
       }
     );

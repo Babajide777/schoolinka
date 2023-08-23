@@ -38,7 +38,7 @@ const addBlogPost = async (req: Request, res: Response) => {
       return createdPost[0]
         ? responseHandler(
             res,
-            "Blog Post registered successfully",
+            "Blog Post created successfully",
             201,
             true,
             createdPost[1]
@@ -77,9 +77,13 @@ const getBlogPost = async (req: Request, res: Response) => {
 };
 
 const editBlogPost = async (req: Request, res: Response) => {
-  const id = Number(req.params.id);
+  const postId = Number(req.params.id);
 
-  const check = await findPostByID(id);
+  if (!Number.isInteger(postId)) {
+    return responseHandler(res, "Invalid Post Id", 400, false, "");
+  }
+
+  const check = await findPostByID(postId);
 
   if (!check[0]) {
     return responseHandler(res, "Post does not exist", 400, false, "");
@@ -94,23 +98,37 @@ const editBlogPost = async (req: Request, res: Response) => {
     return responseHandler(res, allErrors, 400, false, "");
   }
 
-  const { title, description } = req.body;
+  const bearerHeader = req.headers.authorization;
 
-  const editedPost = await findAndEditPostDetails({
-    title,
-    description,
-    userId: id,
-  });
+  if (bearerHeader !== undefined) {
+    const token = bearerHeader.split(" ")[1];
 
-  return editedPost[0]
-    ? responseHandler(
-        res,
-        "Blog Post edited successfully",
-        201,
-        true,
-        editedPost[1]
-      )
-    : responseHandler(res, editedPost[1], 400, false, "");
+    const check = verifyJWTToken(token);
+    const { id } = check[1];
+
+    const { title, description } = req.body;
+
+    const editedPost = await findAndEditPostDetails({
+      title,
+      description,
+      userId: id,
+      postId,
+    });
+
+    const check2 = await findPostByID(postId);
+
+    return editedPost[0]
+      ? responseHandler(
+          res,
+          "Blog Post edited successfully",
+          201,
+          true,
+          check2[1]
+        )
+      : responseHandler(res, editedPost[1], 400, false, "");
+  }
+
+  return responseHandler(res, "No authorization token found", 403, false, "");
 };
 
 const deleteBlogPost = async (req: Request, res: Response) => {
