@@ -30,6 +30,7 @@ connection
   .sync({ force: false })
   .then(() => {
     console.log("Connection has been established successfully.");
+    console.log(process.env.NODE_ENV);
     app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
   })
   .catch((error: Error) => {
