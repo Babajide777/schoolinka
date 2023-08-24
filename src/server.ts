@@ -13,6 +13,7 @@ const IPADDRESS: any = process.env.PUBLIC_IP_ADDRESS || "localhost";
 const baseUrl = `http://${IPADDRESS}:${PORT}`;
 
 console.log({ baseUrl });
+console.log(process.env);
 
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
