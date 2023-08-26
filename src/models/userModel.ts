@@ -25,6 +25,18 @@ import Post from "./postModel";
  *        password:
  *          type: string
  *          default: stringPassword123
+ *    loginUserInput:
+ *      type: object
+ *      required:
+ *        - email
+ *        - password
+ *      properties:
+ *        email:
+ *          type: string
+ *          default: jane.doe@example.com
+ *        password:
+ *          type: string
+ *          default: stringPassword123
  *    CreateUserResponse:
  *        type: object
  *        properties:
@@ -43,6 +55,25 @@ import Post from "./postModel";
  *        example:
  *           success: true
  *           message: User registered successfully
+ *           data: {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkxNTExMzMxLCJleHAiOjE2OTQxMDMzMzF9.-EdckHhu75pa-5ZMZZto8OuVUM4lHf34fphE4nKUbkI"}
+ *    LoginUserResponse:
+ *        type: object
+ *        properties:
+ *          success:
+ *            type: boolean
+ *            description: Signifies if the operation was a success
+ *          message:
+ *            type: string
+ *            description: Operation message
+ *          data:
+ *            type: object
+ *            properties:
+ *              token:
+ *                type: string
+ *            description: returned data after the operation
+ *        example:
+ *           success: true
+ *           message: Login Successful
  *           data: {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkxNTExMzMxLCJleHAiOjE2OTQxMDMzMzF9.-EdckHhu75pa-5ZMZZto8OuVUM4lHf34fphE4nKUbkI"}
  */
 

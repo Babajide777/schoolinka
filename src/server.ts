@@ -8,7 +8,7 @@ import swaggerDocs from "./utils/swagger";
 
 dotenv.config();
 const app: Application = express();
-const PORT: string | number = process.env.PORT || 4000;
+const PORT: string | number = process.env.PORT || 8080;
 const IPADDRESS: any = process.env.PUBLIC_IP_ADDRESS || "localhost";
 const baseUrl = `http://${IPADDRESS}:${PORT}`;
 
