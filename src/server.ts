@@ -23,15 +23,18 @@ import postRoutes from "./routes/postRoutes";
 app.get("/", (req: Request, res: Response): void => {
   res.send("Medical departure server running");
 });
-app.get("/.well-known/pki-validation/", (req: Request, res: Response): void => {
-  const filePath = path.join(
-    __dirname,
-    "../",
-    "369D65DCC56B7C286566750A71E27A34.txt"
-  );
+app.get(
+  "/.well-known/pki-validation/:file",
+  (req: Request, res: Response): void => {
+    const filePath = path.join(
+      __dirname,
+      "../",
+      "369D65DCC56B7C286566750A71E27A34.txt"
+    );
 
-  res.sendFile(filePath);
-});
+    res.sendFile(filePath);
+  }
+);
 app.use("/api/user", userRoutes);
 app.use("/api/blog", postRoutes);
 swaggerDocs(app, PORT);

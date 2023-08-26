@@ -60,6 +60,29 @@ router.post("/register", resgisterUser);
  */
 
 router.post("/login", loginUser);
+
+/**
+ * @swagger
+ *   /api/get/{userId}:
+ *     get:
+ *       tags:
+ *           - User
+ *       summary: Get user details
+ *       parameters:
+ *        - name: productId
+ *          in: path
+ *          description: The id of the product
+ *          required: true
+ *     responses:
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/LoginUserResponse'
+ *      400:
+ *        description: Bad request
+ */
 router.get("/get/:id", verifyToken, getUser);
 router.put("/edit/:id", editUser);
 router.delete("/delete/:id", deleteUser);
