@@ -5,15 +5,11 @@ import dotenv from "dotenv";
 import corsOptions from "./utils/corsOptions";
 import connection from "./config/db";
 import swaggerDocs from "./utils/swagger";
+import path from "path";
 
 dotenv.config();
 const app: Application = express();
 const PORT: string | number = process.env.PORT || 8080;
-const IPADDRESS: any = process.env.PUBLIC_IP_ADDRESS || "localhost";
-const baseUrl = `http://${IPADDRESS}:${PORT}`;
-
-console.log({ baseUrl });
-console.log(process.env);
 
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
@@ -27,6 +23,15 @@ import postRoutes from "./routes/postRoutes";
 app.get("/", (req: Request, res: Response): void => {
   res.send("Medical departure server running");
 });
+app.get("/.well-known/pki-validation/", (req: Request, res: Response): void => {
+  const filePath = path.join(
+    __dirname,
+    "../",
+    "369D65DCC56B7C286566750A71E27A34.txt"
+  );
+
+  res.sendFile(filePath);
+});
 app.use("/api/user", userRoutes);
 app.use("/api/blog", postRoutes);
 swaggerDocs(app, PORT);
@@ -35,7 +40,6 @@ connection
   .sync({ force: false })
   .then(() => {
     console.log("Connection has been established successfully.");
-    console.log(process.env.NODE_ENV);
     app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
   })
   .catch((error: Error) => {
