@@ -75,6 +75,49 @@ import Post from "./postModel";
  *           success: true
  *           message: Login Successful
  *           data: {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkxNTExMzMxLCJleHAiOjE2OTQxMDMzMzF9.-EdckHhu75pa-5ZMZZto8OuVUM4lHf34fphE4nKUbkI"}
+ *    DeleteUserResponse:
+ *        type: object
+ *        properties:
+ *          success:
+ *            type: boolean
+ *            description: Signifies if the operation was a success
+ *          message:
+ *            type: string
+ *            description: Operation message
+ *          data:
+ *            type: string
+ *            description: returned data after the operation
+ *        example:
+ *           success: true
+ *           message: User deleted successfully
+ *           data: "User deleted successfully"
+ *    UserDetailResponse:
+ *        type: object
+ *        properties:
+ *          success:
+ *            type: boolean
+ *            description: Signifies if the operation was a success
+ *          message:
+ *            type: string
+ *            description: Operation message
+ *          data:
+ *            type: object
+ *            properties:
+ *              firstName:
+ *                type: string
+ *              lastName:
+ *                type: string
+ *              email:
+ *                type: string
+ *              createdAt:
+ *                type: date
+ *              updatedAt:
+ *                type: date
+ *            description: returned data after the operation
+ *        example:
+ *           success: true
+ *           message: User details retrieved successfully
+ *           data: {firstName: "", lastName: "", email: "", createdAt: "", updatedAt: ""}
  */
 
 @Table({

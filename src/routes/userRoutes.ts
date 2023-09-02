@@ -63,15 +63,17 @@ router.post("/login", loginUser);
 
 /**
  * @swagger
- *   /api/get/{userId}:
+ *   /api/user/get/{userId}:
  *     get:
  *       tags:
  *           - User
  *       summary: Get user details
+ *       security:
+ *         - jwtAuth: [] # Apply JWT authentication to this route
  *       parameters:
- *        - name: productId
+ *        - name: userId
  *          in: path
- *          description: The id of the product
+ *          description: The id of the user
  *          required: true
  *     responses:
  *      200:
@@ -79,12 +81,71 @@ router.post("/login", loginUser);
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/LoginUserResponse'
+ *              $ref: '#/components/schemas/UserDetailResponse'
  *      400:
  *        description: Bad request
  */
+
 router.get("/get/:id", verifyToken, getUser);
-router.put("/edit/:id", editUser);
-router.delete("/delete/:id", deleteUser);
+
+/**
+ * @swagger
+ *   /api/user/edit/{userId}:
+ *     put:
+ *       tags:
+ *           - User
+ *       summary: Edit user details
+ *       security:
+ *         - jwtAuth: [] # Apply JWT authentication to this route
+ *       parameters:
+ *        - name: userId
+ *          in: path
+ *          description: The id of the user
+ *          required: true
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CreateUserInput'
+ *     responses:
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UserDetailResponse'
+ *      400:
+ *        description: Bad request
+ */
+
+router.put("/edit/:id", verifyToken, editUser);
+
+/**
+ * @swagger
+ *   /api/user/delete/{userId}:
+ *     delete:
+ *       tags:
+ *           - User
+ *       summary: Delete user
+ *       security:
+ *         - jwtAuth: [] # Apply JWT authentication to this route
+ *       parameters:
+ *        - name: userId
+ *          in: path
+ *          description: The id of the user
+ *          required: true
+ *     responses:
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/DeleteUserResponse'
+ *      400:
+ *        description: Bad request
+ */
+
+router.delete("/delete/:id", verifyToken, deleteUser);
 
 export default router;
