@@ -8,6 +8,83 @@ import {
 } from "sequelize-typescript";
 import User from "./userModel";
 
+/**
+ * @openapi
+ * components:
+ *  schemas:
+ *    CreatePostInput:
+ *      type: object
+ *      required:
+ *        - title
+ *        - description
+ *      properties:
+ *        title:
+ *          type: string
+ *          default: Jane
+ *        description:
+ *          type: string
+ *          default: Doe
+ *    CreatePostResponse:
+ *        type: object
+ *        properties:
+ *          success:
+ *            type: boolean
+ *            description: Signifies if the operation was a success
+ *          message:
+ *            type: string
+ *            description: Operation message
+ *          data:
+ *            type: object
+ *            properties:
+ *              title:
+ *                type: string
+ *              description:
+ *                type: string
+ *              userId:
+ *                type: string
+ *              createdAt:
+ *                type: string
+ *              updatedAt:
+ *                type: string
+ *            description: returned data after the operation
+ *        example:
+ *           success: true
+ *           message: User registered successfully
+ *           data: {title: "", description: "", userId: "", updatedAt: "", createdAt: ""}
+ *    DeletePostResponse:
+ *        type: object
+ *        properties:
+ *          success:
+ *            type: boolean
+ *            description: Signifies if the operation was a success
+ *          message:
+ *            type: string
+ *            description: Operation message
+ *          data:
+ *            type: string
+ *            description: returned data after the operation
+ *        example:
+ *           success: true
+ *           message: Post deleted successfully
+ *           data: "Post deleted successfully"
+ *    AllPostsDetailResponse:
+ *        type: object
+ *        properties:
+ *          success:
+ *            type: boolean
+ *            description: Signifies if the operation was a success
+ *          message:
+ *            type: string
+ *            description: Operation message
+ *          data:
+ *            type: array
+ *            description: returned data after the operation
+ *        example:
+ *           success: true
+ *           message: All Posts retrieved successfully
+ *           data: [//]
+ */
+
 @Table({
   timestamps: true,
   tableName: "Post",

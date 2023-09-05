@@ -23,7 +23,7 @@ import verifyToken from "../middlewares/authMiddleware";
  *             schema:
  *               $ref: '#/components/schemas/CreateUserInput'
  *     responses:
- *      200:
+ *      201:
  *        description: Success
  *        content:
  *          application/json:

@@ -17,9 +17,6 @@ const {
 } = process.env;
 
 let isProduction = NODE_ENV && NODE_ENV === "production";
-console.log(liveHost, livePassword, liveUserName);
-
-console.log(isProduction);
 
 const connection = new Sequelize({
   dialect: "mysql",
