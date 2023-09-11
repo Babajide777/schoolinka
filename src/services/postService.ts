@@ -97,15 +97,24 @@ const findAllPosts = async (userId: number): Promise<[boolean, any]> => {
   }
 };
 
-const perPagePosts = async (
+// search for posts with a term
+const getPostsUsingSearch = async (
+  searchTerm: string,
   page: number,
   limit: number
 ): Promise<[boolean, any]> => {
   try {
-    const neededPosts = Post.findAll({
+    let query = { title: { $regex: `${searchTerm}`, $options: "i" } };
+
+    // search offset
+    let offSetValue = (page - 1) * limit;
+
+    const neededPosts = await Post.findAll({
+      where: query,
       limit: limit,
-      offset: page,
+      offset: offSetValue,
     });
+
     return [true, neededPosts];
   } catch (error) {
     return [false, error];
@@ -118,5 +127,5 @@ export {
   findAndEditPostDetails,
   findAndDeleteAPost,
   findAllPosts,
-  perPagePosts,
+  getPostsUsingSearch,
 };

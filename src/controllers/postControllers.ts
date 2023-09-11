@@ -8,7 +8,7 @@ import {
   findAndDeleteAPost,
   findAndEditPostDetails,
   findPostByID,
-  perPagePosts,
+  getPostsUsingSearch,
 } from "../services/postService";
 
 const addBlogPost = async (req: Request, res: Response) => {
@@ -175,25 +175,41 @@ const getAllPosts = async (req: Request, res: Response) => {
   return responseHandler(res, "No authorization token found", 403, false, "");
 };
 
-const paginatedPosts = async (req: Request, res: Response) => {
-  const { page, size } = req.query;
+//controller for post search
+const postSearch = async (req: Request, res: Response) => {
+  const { searchTerm, page, limit } = req.query;
 
-  let newPage;
+  const currentPage = Number(page) || 1;
 
-  !page ? (newPage = 1) : (newPage = Number(page));
+  const { details } = await userIDValidation({ id: currentPage });
+  if (details) {
+    let allErrors = details.map((detail: any) =>
+      detail.message.replace(/"/g, "")
+    );
+    return responseHandler(res, allErrors, 400, false, "");
+  }
 
-  let newSize = Number(size);
-  const check = await perPagePosts(newPage - 1, newSize);
+  if (typeof searchTerm == "string") {
+    // get posts depending on search
+    const searchResult = await getPostsUsingSearch(
+      searchTerm,
+      currentPage,
+      Number(limit)
+    );
 
-  return check[0]
-    ? responseHandler(
+    //check if search was successful
+    if (searchResult[0]) {
+      return responseHandler(
         res,
-        "All Posts retrieved successfully",
+        "returned searched results",
         200,
-        true,
-        check[1]
-      )
-    : responseHandler(res, check[1], 400, false, "");
+        searchResult[0],
+        searchResult[1]
+      );
+    }
+    return responseHandler(res, searchResult[1], 400, searchResult[0], "");
+  }
+  return responseHandler(res, "Add a valid search term", 400, false, "");
 };
 
 export {
@@ -202,5 +218,5 @@ export {
   editBlogPost,
   deleteBlogPost,
   getAllPosts,
-  paginatedPosts,
+  postSearch,
 };

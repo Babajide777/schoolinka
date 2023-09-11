@@ -5,7 +5,7 @@ import {
   editBlogPost,
   getAllPosts,
   getBlogPost,
-  paginatedPosts,
+  postSearch,
 } from "../controllers/postControllers";
 import verifyToken from "../middlewares/authMiddleware";
 const router = Router();
@@ -143,6 +143,6 @@ router.delete("/delete/:id", verifyToken, deleteBlogPost);
 
 router.get("/all", getAllPosts);
 
-router.get("/set", paginatedPosts);
+router.get("/set", postSearch);
 
 export default router;
