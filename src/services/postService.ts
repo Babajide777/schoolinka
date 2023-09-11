@@ -97,10 +97,26 @@ const findAllPosts = async (userId: number): Promise<[boolean, any]> => {
   }
 };
 
+const perPagePosts = async (
+  page: number,
+  limit: number
+): Promise<[boolean, any]> => {
+  try {
+    const neededPosts = Post.findAll({
+      limit: limit,
+      offset: page,
+    });
+    return [true, neededPosts];
+  } catch (error) {
+    return [false, error];
+  }
+};
+
 export {
   createAPost,
   findPostByID,
   findAndEditPostDetails,
   findAndDeleteAPost,
   findAllPosts,
+  perPagePosts,
 };

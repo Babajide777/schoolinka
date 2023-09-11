@@ -8,6 +8,7 @@ import {
   findAndDeleteAPost,
   findAndEditPostDetails,
   findPostByID,
+  perPagePosts,
 } from "../services/postService";
 
 const addBlogPost = async (req: Request, res: Response) => {
@@ -174,4 +175,32 @@ const getAllPosts = async (req: Request, res: Response) => {
   return responseHandler(res, "No authorization token found", 403, false, "");
 };
 
-export { addBlogPost, getBlogPost, editBlogPost, deleteBlogPost, getAllPosts };
+const paginatedPosts = async (req: Request, res: Response) => {
+  const { page, size } = req.query;
+
+  let newPage;
+
+  !page ? (newPage = 1) : (newPage = Number(page));
+
+  let newSize = Number(size);
+  const check = await perPagePosts(newPage - 1, newSize);
+
+  return check[0]
+    ? responseHandler(
+        res,
+        "All Posts retrieved successfully",
+        200,
+        true,
+        check[1]
+      )
+    : responseHandler(res, check[1], 400, false, "");
+};
+
+export {
+  addBlogPost,
+  getBlogPost,
+  editBlogPost,
+  deleteBlogPost,
+  getAllPosts,
+  paginatedPosts,
+};
