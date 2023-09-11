@@ -19,13 +19,14 @@ const {
 let isProduction = NODE_ENV && NODE_ENV === "production";
 
 const connection = new Sequelize({
-  dialect: "mysql",
+  dialect: "postgres",
   host: isProduction ? liveHost : host,
-  username: isProduction ? liveUserName : username,
+  // username: isProduction ? liveUserName : username,
+  username: "postgres",
   password: isProduction ? livePassword : password,
   database,
   logging: false,
-  port: 3306,
+  port: 5432,
 });
 
 connection.addModels([User, Post]);
